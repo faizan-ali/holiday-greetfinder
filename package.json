@@ -1,5 +1,5 @@
 {
-	"name": "holiday-greetings",
+	"name": "holiday-greetfinder",
 	"license": "MIT",
 	"author": {
 		"name": "Faizan Ali",
@@ -7,15 +7,26 @@
 		"website": "https://faizanali.com"
 	},
 	"version": "0.0.1",
-	"description": "A Node.js client for Heap.io",
+	"description": "A utility that lets you determine if a given date is a holiday and also show a greeting. Works until 2028, no API access required.",
 	"keywords": [
-		"heap",
-		"analytics",
-		"client",
-		"heap client",
-		"heap.io",
-		"heap node.js",
-		"heap nodejs"
+		"greetings",
+		"holiday",
+		"culture",
+		"holi",
+		"christmas",
+		"new year",
+		"thanksgiving",
+		"diwali",
+		"eid",
+		"easter",
+		"valentines day",
+		"mothers day",
+		"fathers day",
+		"nowruz",
+		"hanukkah",
+		"jewish",
+		"muslim",
+		"christian"
 	],
 	"type": "module",
 	"main": "dist/index.js",
@@ -25,7 +36,7 @@
 		"build": "tsc",
 		"prepublishOnly": "npm run build",
 		"lint:fix": "npx @biomejs/biome format --write ",
-		"test": "node --import tsx --test test/index.test.ts"
+		"test": "node --import tsx --test test/functions.test.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.3",
@@ -35,7 +46,7 @@
 		"typescript": "^5.5.3"
 	},
 	"repository": {
-		"url": "https://github.com/faizan-ali/heap-io-nodejs",
+		"url": "https://github.com/faizan-ali/holiday-greetings",
 		"type": "git"
 	}
 }

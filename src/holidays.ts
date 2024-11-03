@@ -1,518 +1,581 @@
-import type { Holiday } from './index'
-import { getNthWeekday, getThanksgiving, isDateInRange, isSameDay } from './lib'
-import { ChineseHolidays } from './lib/calendars/chinese'
-import { ChristianHolidays } from './lib/calendars/christian'
-import { JewishHolidays } from './lib/calendars/hebrew'
-import { HinduHolidays } from './lib/calendars/hindu'
-import { IslamicHolidays } from './lib/calendars/islamic'
+import type { Holiday } from './'
 
-const islamic = [
+export const holidays = [
 	{
-		name: 'Eid al-Fitr',
+		greeting: 'Merry Christmas',
+		emoji: '🎄',
+		dates: [{ month: 12, day: 25 }]
+	},
+	{
+		greeting: 'Happy Christmas Eve',
+		emoji: '🎄',
+		dates: [{ month: 12, day: 24 }]
+	},
+	{
 		greeting: 'Eid Mubarak',
 		emoji: '☪',
-		isHoliday: (date: Date): boolean => {
-			return IslamicHolidays.isEidAlFitr(date)
-		}
+		dates: [
+			// Eid al-Fitr (including adjacent dates)
+			'2024-04-09',
+			'2024-04-10',
+			'2024-04-11',
+			'2025-03-29',
+			'2025-03-30',
+			'2025-03-31',
+			'2026-03-19',
+			'2026-03-20',
+			'2026-03-21',
+			'2027-03-08',
+			'2027-03-09',
+			'2027-03-10',
+			'2028-02-26',
+			'2028-02-27',
+			'2028-02-28',
+			'2029-02-14',
+			'2029-02-15',
+			'2029-02-16',
+			'2030-03-04',
+			'2030-03-05',
+			'2030-03-06',
+			'2031-02-21',
+			'2031-02-22',
+			'2031-02-23',
+			// Eid al-Adha (including adjacent dates)
+			'2024-06-15',
+			'2024-06-16',
+			'2024-06-17',
+			'2025-06-05',
+			'2025-06-06',
+			'2025-06-07',
+			'2026-05-25',
+			'2026-05-26',
+			'2026-05-27',
+			'2027-05-15',
+			'2027-05-16',
+			'2027-05-17',
+			'2028-05-03',
+			'2028-05-04',
+			'2028-05-05',
+			'2029-04-22',
+			'2029-04-23',
+			'2029-04-24',
+			'2030-04-11',
+			'2030-04-12',
+			'2030-04-13',
+			'2031-03-31',
+			'2031-04-01',
+			'2031-04-02'
+		]
 	},
 	{
-		name: 'Eid al-Adha',
-		greeting: 'Eid Mubarak',
-		emoji: '🕌',
-		isHoliday: (date: Date): boolean => {
-			const eidDates = IslamicHolidays.calculateEidAlAdha(date.getFullYear())
-			return eidDates.some(eidDate => isSameDay(date, eidDate))
-		}
-	}
-]
-
-const christian = [
-	// Christian Holidays
-	{
-		name: 'Christmas',
-		greeting: 'Merry Christmas',
-		emoji: '🎅',
-		isHoliday: (date: Date): boolean => {
-			// Create a new Date object using UTC components to avoid timezone issues
-			return (
-				date.getUTCFullYear() === date.getFullYear() &&
-				date.getUTCMonth() === 11 && // December
-				date.getUTCDate() === 25
-			)
-		}
-	},
-	{
-		name: 'Christmas Eve',
-		greeting: 'Merry Christmas Eve',
-		emoji: '🎄',
-		isHoliday: (date: Date): boolean => {
-			return (
-				date.getUTCFullYear() === date.getFullYear() &&
-				date.getUTCMonth() === 11 && // December
-				date.getUTCDate() === 24
-			)
-		}
-	},
-	{
-		name: 'Easter',
-		greeting: 'Happy Easter',
-		emoji: '🐰',
-		isHoliday: (date: Date): boolean => {
-			const easter = ChristianHolidays.calculateEaster(date.getFullYear())
-			return isSameDay(date, easter)
-		}
-	},
-	{
-		name: 'Good Friday',
-		greeting: 'Blessed Good Friday',
-		emoji: '✝',
-		isHoliday: (date: Date): boolean => {
-			const easter = ChristianHolidays.calculateEaster(date.getFullYear())
-			const goodFriday = new Date(easter)
-			goodFriday.setDate(easter.getDate() - 2)
-			return isSameDay(date, goodFriday)
-		}
-	}
-]
-
-const jewish = [
-	{
-		name: 'Rosh Hashanah',
-		greeting: 'Shana Tova',
-		emoji: '🍎',
-		isHoliday: (date: Date): boolean => {
-			const holidays = JewishHolidays.calculateRoshHashanah(date.getFullYear())
-			return holidays.some(holiday => isSameDay(date, holiday))
-		}
-	},
-	{
-		name: 'Yom Kippur',
-		greeting: "G'mar Chatima Tova",
-		emoji: '✡',
-		isHoliday: (date: Date): boolean => {
-			const holidays = JewishHolidays.calculateYomKippur(date.getFullYear())
-			return holidays.some(holiday => isSameDay(date, holiday))
-		}
-	},
-	{
-		name: 'Hanukkah',
 		greeting: 'Happy Hanukkah',
 		emoji: '🕎',
-		isHoliday: (date: Date): boolean => {
-			const holidays = JewishHolidays.calculateHanukkah(date.getFullYear())
-			return holidays.some(holiday => isSameDay(date, holiday))
-		}
+		dates: [
+			// All 8 days plus eve for each year
+			'2024-12-24',
+			'2024-12-25',
+			'2024-12-26',
+			'2024-12-27',
+			'2024-12-28',
+			'2024-12-29',
+			'2024-12-30',
+			'2024-12-31',
+			'2025-01-01',
+			'2025-12-13',
+			'2025-12-14',
+			'2025-12-15',
+			'2025-12-16',
+			'2025-12-17',
+			'2025-12-18',
+			'2025-12-19',
+			'2025-12-20',
+			'2025-12-21',
+			'2026-12-03',
+			'2026-12-04',
+			'2026-12-05',
+			'2026-12-06',
+			'2026-12-07',
+			'2026-12-08',
+			'2026-12-09',
+			'2026-12-10',
+			'2026-12-11',
+			'2027-12-23',
+			'2027-12-24',
+			'2027-12-25',
+			'2027-12-26',
+			'2027-12-27',
+			'2027-12-28',
+			'2027-12-29',
+			'2027-12-30',
+			'2027-12-31',
+			'2028-12-11',
+			'2028-12-12',
+			'2028-12-13',
+			'2028-12-14',
+			'2028-12-15',
+			'2028-12-16',
+			'2028-12-17',
+			'2028-12-18',
+			'2028-12-19',
+			'2029-12-01',
+			'2029-12-02',
+			'2029-12-03',
+			'2029-12-04',
+			'2029-12-05',
+			'2029-12-06',
+			'2029-12-07',
+			'2029-12-08',
+			'2029-12-09',
+			'2030-12-20',
+			'2030-12-21',
+			'2030-12-22',
+			'2030-12-23',
+			'2030-12-24',
+			'2030-12-25',
+			'2030-12-26',
+			'2030-12-27',
+			'2030-12-28',
+			'2031-12-09',
+			'2031-12-10',
+			'2031-12-11',
+			'2031-12-12',
+			'2031-12-13',
+			'2031-12-14',
+			'2031-12-15',
+			'2031-12-16',
+			'2031-12-17'
+		]
 	},
 	{
-		name: 'Passover',
 		greeting: 'Chag Pesach Sameach',
 		emoji: '🍷',
-		isHoliday: (date: Date): boolean => {
-			const holidays = JewishHolidays.calculatePassover(date.getFullYear())
-			return holidays.some(holiday => isSameDay(date, holiday))
-		}
+		dates: [
+			// Passover (including first two and last two days)
+			'2024-04-22',
+			'2024-04-23',
+			'2024-04-28',
+			'2024-04-29',
+			'2025-04-12',
+			'2025-04-13',
+			'2025-04-18',
+			'2025-04-19',
+			'2026-04-01',
+			'2026-04-02',
+			'2026-04-07',
+			'2026-04-08',
+			'2027-04-21',
+			'2027-04-22',
+			'2027-04-27',
+			'2027-04-28',
+			'2028-04-10',
+			'2028-04-11',
+			'2028-04-16',
+			'2028-04-17',
+			'2029-03-30',
+			'2029-03-31',
+			'2029-04-05',
+			'2029-04-06',
+			'2030-04-19',
+			'2030-04-20',
+			'2030-04-25',
+			'2030-04-26',
+			'2031-04-08',
+			'2031-04-09',
+			'2031-04-14',
+			'2031-04-15'
+		]
 	},
 	{
-		name: 'Shavuot',
-		greeting: 'Chag Sameach',
-		emoji: '📜',
-		isHoliday: (date: Date): boolean => {
-			const holidays = JewishHolidays.calculateShavuot(date.getFullYear())
-			return holidays.some(holiday => isSameDay(date, holiday))
-		}
+		greeting: 'Shana Tova',
+		emoji: '🍎',
+		dates: [
+			// Rosh Hashanah (2-day holiday plus variations)
+			'2024-10-02',
+			'2024-10-03',
+			'2024-10-04',
+			'2025-09-22',
+			'2025-09-23',
+			'2025-09-24',
+			'2026-09-11',
+			'2026-09-12',
+			'2026-09-13',
+			'2027-10-01',
+			'2027-10-02',
+			'2027-10-03',
+			'2028-09-20',
+			'2028-09-21',
+			'2028-09-22',
+			'2029-09-09',
+			'2029-09-10',
+			'2029-09-11',
+			'2030-09-28',
+			'2030-09-29',
+			'2030-09-30',
+			'2031-09-17',
+			'2031-09-18',
+			'2031-09-19'
+		]
 	},
 	{
-		name: 'Sukkot',
-		greeting: 'Chag Sameach',
-		emoji: '🌿',
-		isHoliday: (date: Date): boolean => {
-			const holidays = JewishHolidays.calculateSukkot(date.getFullYear())
-			return holidays.some(holiday => isSameDay(date, holiday))
-		}
-	}
-]
-
-const hindu = [
-	{
-		name: 'Diwali',
 		greeting: 'Happy Diwali',
 		emoji: '🪔',
-		isHoliday: (date: Date): boolean => {
-			const diwaliDates = HinduHolidays.calculateDiwali(date.getFullYear())
-			return diwaliDates.some(diwaliDate => isSameDay(date, diwaliDate))
-		}
+		dates: [
+			// Including day before and after for regional variations
+			'2024-10-30',
+			'2024-10-31',
+			'2024-11-01',
+			'2025-10-19',
+			'2025-10-20',
+			'2025-10-21',
+			'2026-11-07',
+			'2026-11-08',
+			'2026-11-09',
+			'2027-10-28',
+			'2027-10-29',
+			'2027-10-30',
+			'2028-10-16',
+			'2028-10-17',
+			'2028-10-18'
+		]
 	},
 	{
-		name: 'Holi',
-		greeting: 'Happy Holi',
-		emoji: '🎨',
-		isHoliday: (date: Date): boolean => {
-			const holiDates = HinduHolidays.calculateHoli(date.getFullYear())
-			return holiDates.some(holiDate => isSameDay(date, holiDate))
-		}
+		greeting: 'Happy Easter',
+		emoji: '🐰',
+		dates: [
+			// Western Easter (including Good Friday through Easter Monday)
+			'2024-03-29',
+			'2024-03-30',
+			'2024-03-31',
+			'2024-04-01',
+			'2025-04-18',
+			'2025-04-19',
+			'2025-04-20',
+			'2025-04-21',
+			'2026-04-03',
+			'2026-04-04',
+			'2026-04-05',
+			'2026-04-06',
+			'2027-03-26',
+			'2027-03-27',
+			'2027-03-28',
+			'2027-03-29',
+			'2028-04-14',
+			'2028-04-15',
+			'2028-04-16',
+			'2028-04-17',
+			'2029-03-30',
+			'2029-03-31',
+			'2029-04-01',
+			'2029-04-02',
+			'2030-04-19',
+			'2030-04-20',
+			'2030-04-21',
+			'2030-04-22',
+			'2031-04-11',
+			'2031-04-12',
+			'2031-04-13',
+			'2031-04-14',
+			// Eastern Orthodox Easter
+			'2024-05-03',
+			'2024-05-04',
+			'2024-05-05',
+			'2025-04-20',
+			'2025-04-21',
+			'2025-04-22',
+			'2026-04-10',
+			'2026-04-11',
+			'2026-04-12',
+			'2027-04-30',
+			'2027-05-01',
+			'2027-05-02',
+			'2028-04-21',
+			'2028-04-22',
+			'2028-04-23',
+			'2029-04-08',
+			'2029-04-09',
+			'2029-04-10',
+			'2030-04-28',
+			'2030-04-29',
+			'2030-04-30',
+			'2031-04-13',
+			'2031-04-14',
+			'2031-04-15'
+		]
 	},
+	// Fixed date holidays
 	{
-		name: 'Krishna Janmashtami',
-		greeting: 'Happy Janmashtami',
-		emoji: '🙏',
-		isHoliday: (date: Date): boolean => {
-			const janmashtamiDates = HinduHolidays.calculateJanmashtami(
-				date.getFullYear()
-			)
-			return janmashtamiDates.some(janmashtamiDate =>
-				isSameDay(date, janmashtamiDate)
-			)
-		}
-	},
-	{
-		name: 'Navaratri',
-		greeting: 'Happy Navaratri',
-		emoji: '🪷',
-		isHoliday: (date: Date): boolean => {
-			const navaratriDates = HinduHolidays.calculateNavaratri(
-				date.getFullYear()
-			)
-			return navaratriDates.some(navaratriDate =>
-				isSameDay(date, navaratriDate)
-			)
-		}
-	}
-]
-
-const chinese = [
-	{
-		name: 'Lunar New Year',
-		greeting: '新年快乐 / 새해 복 많이 받으세요',
-		emoji: '🧧',
-		isHoliday: (date: Date): boolean => {
-			const lunarNewYearDates = ChineseHolidays.calculateLunarNewYear(
-				date.getFullYear()
-			)
-			return lunarNewYearDates.some(festivalDate =>
-				isSameDay(date, festivalDate)
-			)
-		}
-	},
-	{
-		name: 'Mid-Autumn Festival',
-		greeting: '中秋节快乐 / 추석 잘 보내세요',
-		emoji: '🥮',
-		isHoliday: (date: Date): boolean => {
-			const midAutumnDates = ChineseHolidays.calculateMidAutumnFestival(
-				date.getFullYear()
-			)
-			return midAutumnDates.some(festivalDate => isSameDay(date, festivalDate))
-		}
-	},
-	{
-		name: 'Dragon Boat Festival',
-		greeting: '端午节快乐',
-		emoji: '🛶',
-		isHoliday: (date: Date): boolean => {
-			const dragonBoatDates = ChineseHolidays.calculateDragonBoatFestival(
-				date.getFullYear()
-			)
-			return dragonBoatDates.some(festivalDate => isSameDay(date, festivalDate))
-		}
-	},
-	{
-		name: 'Qingming Festival',
-		greeting: '清明节安康',
-		emoji: '🌿',
-		isHoliday: (date: Date): boolean => {
-			const qingmingDates = ChineseHolidays.calculateQingming(
-				date.getFullYear()
-			)
-			return qingmingDates.some(festivalDate => isSameDay(date, festivalDate))
-		}
-	}
-]
-
-export const holidays: Holiday[] = [
-	...christian,
-	...islamic,
-	...jewish,
-	...chinese,
-	// Fixed date celebrations
-	{
-		name: 'New Year',
-		greeting: 'Happy New Year',
-		emoji: '🎆',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 0 && date.getDate() === 1
-		}
-	},
-	{
-		name: "New Year's Day",
-		greeting: 'Happy New Year',
-		emoji: '🎆',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 0 && date.getDate() === 1
-		}
-	},
-	{
-		name: 'Lunar New Year',
-		greeting: 'Happy Lunar New Year',
-		emoji: '🧧',
-		isHoliday: (date: Date): boolean => {
-			// Simplified check - falls between Jan 21 and Feb 20
-			const month = date.getMonth()
-			const day = date.getDate()
-			return (month === 0 && day >= 21) || (month === 1 && day <= 20)
-		}
-	},
-
-	// Global Celebrations
-	{
-		name: "Valentine's Day",
-		greeting: "Happy Valentine's Day",
-		emoji: '❤',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 1 && date.getDate() === 14
-		}
-	},
-	{
-		name: 'Halloween',
-		greeting: 'Happy Halloween',
-		emoji: '🎃',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 9 && date.getDate() === 31
-		}
-	},
-	{
-		name: "Mother's Day",
-		greeting: "Happy Mother's Day",
-		emoji: '💐',
-		isHoliday: (date: Date): boolean => {
-			// Second Sunday in May in many countries
-			if (date.getMonth() === 4) {
-				return isSameDay(date, getNthWeekday(date, 2, 0))
-			}
-			return false
-		}
-	},
-	{
-		name: "Father's Day",
-		greeting: "Happy Father's Day",
-		emoji: '👔',
-		isHoliday: (date: Date): boolean => {
-			// Third Sunday in June in many countries
-			if (date.getMonth() === 5) {
-				return isSameDay(date, getNthWeekday(date, 3, 0))
-			}
-			return false
-		}
-	},
-	{
-		name: "International Women's Day",
-		greeting: "Happy International Women's Day",
-		emoji: '👩',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 2 && date.getDate() === 8
-		}
-	},
-	{
-		name: 'World Pride Day',
-		greeting: 'Happy Pride',
-		emoji: '🏳',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 5 && date.getDate() === 28
-		}
-	},
-	{
-		name: 'Earth Day',
 		greeting: 'Happy Earth Day',
 		emoji: '🌍',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 3 && date.getDate() === 22
-		}
+		dates: [{ month: 4, day: 22 }]
 	},
 	{
-		name: 'International Labor Day',
-		greeting: 'Happy Labor Day',
-		emoji: '👷',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 4 && date.getDate() === 1
-		}
+		greeting: "Happy Valentine's Day",
+		emoji: '❤',
+		dates: [{ month: 2, day: 14 }]
 	},
 	{
-		name: 'United Nations Day',
-		greeting: 'Happy UN Day',
-		emoji: '🌐',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 9 && date.getDate() === 24
-		}
+		greeting: 'Happy Halloween',
+		emoji: '🎃',
+		dates: [{ month: 10, day: 31 }]
 	},
 	{
-		name: 'Human Rights Day',
-		greeting: 'Happy Human Rights Day',
-		emoji: '✊',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 11 && date.getDate() === 10
-		}
+		greeting: 'Happy New Year',
+		emoji: '🎊',
+		dates: [{ month: 1, day: 1 }]
 	},
-
-	// North American Holidays
+	// US holidays with fixed calculations
 	{
-		name: 'US Independence Day',
-		greeting: 'Happy Fourth of July',
-		emoji: '🇺',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 6 && date.getDate() === 4
-		}
-	},
-	{
-		name: 'US Thanksgiving',
 		greeting: 'Happy Thanksgiving',
 		emoji: '🦃',
-		isHoliday: (date: Date): boolean => {
-			const thanksgiving = getThanksgiving(date, true)
-			return isSameDay(date, thanksgiving)
-		}
+		dates: [
+			// Fourth Thursday in November for each year
+			'2024-11-28',
+			'2025-11-27',
+			'2026-11-26',
+			'2027-11-25',
+			'2028-11-23',
+			'2029-11-22'
+		]
 	},
 	{
-		name: 'Canadian Thanksgiving',
-		greeting: 'Happy Thanksgiving',
-		emoji: '🍁',
-		isHoliday: (date: Date): boolean => {
-			const thanksgiving = getThanksgiving(date, false)
-			return isSameDay(date, thanksgiving)
-		}
+		greeting: "Happy Father's Day",
+		emoji: '👔',
+		dates: [
+			'2024-06-16',
+			'2025-06-15',
+			'2026-06-21',
+			'2027-06-20',
+			'2028-06-18'
+		]
 	},
 	{
-		name: 'Cinco de Mayo',
-		greeting: '¡Feliz Cinco de Mayo!',
-		emoji: '🇲',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 4 && date.getDate() === 5
-		}
-	},
-
-	// European Holidays
-	{
-		name: 'Oktoberfest',
-		greeting: 'Prost!',
-		emoji: '🍺',
-		isHoliday: (date: Date): boolean => {
-			// Mid-September to first Sunday in October
-			return isDateInRange(date, 8, 16, 9, 7)
-		}
+		greeting: "Happy Mother's Day",
+		emoji: '💐',
+		dates: [
+			// Second Sunday in May
+			'2024-05-12',
+			'2025-05-11',
+			'2026-05-10',
+			'2027-05-09',
+			'2028-05-14',
+			'2029-05-13'
+		]
 	},
 	{
-		name: 'Bastille Day',
-		greeting: 'Joyeux 14 Juillet',
-		emoji: '🇫',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 6 && date.getDate() === 14
-		}
+		greeting: 'Happy US Independence Day',
+		emoji: '🇺',
+		dates: [{ month: 7, day: 4 }]
 	},
 	{
-		name: "St. Patrick's Day",
 		greeting: "Happy St. Patrick's Day",
 		emoji: '☘',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 2 && date.getDate() === 17
-		}
+		dates: [{ month: 3, day: 17 }]
 	},
 	{
-		name: 'Guy Fawkes Night',
-		greeting: 'Happy Bonfire Night',
-		emoji: '🎆',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 10 && date.getDate() === 5
-		}
-	},
-
-	// Asian Holidays
-	{
-		name: 'Korean Seollal',
-		greeting: '새해 복 많이 받으세요',
-		emoji: '🇰',
-		isHoliday: (date: Date): boolean => {
-			// Coincides with Lunar New Year
-			return isDateInRange(date, 0, 21, 1, 20)
-		}
+		greeting: '¡Feliz Cinco de Mayo!',
+		emoji: '🇲',
+		dates: [{ month: 5, day: 5 }]
 	},
 	{
-		name: 'Vesak',
-		greeting: 'Happy Vesak Day',
-		emoji: '🙏',
-		isHoliday: (date: Date): boolean => {
-			// Usually May full moon
-			return isDateInRange(date, 4, 5, 4, 15)
-		}
-	},
-
-	// Middle Eastern Holidays
-	{
-		name: 'Nowruz',
-		greeting: 'Nowruz Mobrook!',
-		emoji: '🌱',
-		isHoliday: (date: Date): boolean => {
-			// March 19-21
-			return (
-				date.getMonth() === 2 && date.getDate() >= 19 && date.getDate() <= 21
-			)
-		}
-	},
-
-	// African Holidays
-	{
-		name: 'Africa Day',
 		greeting: 'Happy Africa Day',
 		emoji: '🌍',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 4 && date.getDate() === 25
-		}
+		dates: [{ month: 5, day: 25 }]
 	},
 	{
-		name: 'South African Heritage Day',
-		greeting: 'Happy Heritage Day',
-		emoji: '🇿',
-		isHoliday: (date: Date): boolean => {
-			return date.getMonth() === 8 && date.getDate() === 24
-		}
-	},
-
-	// Latin American Holidays
-	{
-		name: 'Día de los Muertos',
-		greeting: '¡Feliz Día de los Muertos!',
-		emoji: '💀',
-		isHoliday: (date: Date): boolean => {
-			return (
-				date.getMonth() === 10 && (date.getDate() === 1 || date.getDate() === 2)
-			)
-		}
+		greeting: 'Happy Pride',
+		emoji: '🏳',
+		dates: [
+			{ month: 6, day: 1 }, // Start of Pride Month
+			{ month: 6, day: 28 } // Stonewall Anniversary
+		]
 	},
 	{
-		name: 'Brazilian Carnival',
-		greeting: 'Feliz Carnaval',
+		greeting: 'Happy Holi',
+		emoji: '🎨',
+		dates: [
+			// Holi dates for coming years
+			'2024-03-25',
+			'2025-03-14',
+			'2026-03-04',
+			'2027-03-22',
+			'2028-03-11',
+			'2029-02-28',
+			'2030-03-19',
+			'2031-03-08'
+		]
+	},
+	{
+		greeting: "G'mar Chatima Tova",
+		emoji: '✡',
+		dates: [
+			// Yom Kippur (including Kol Nidre evening)
+			'2024-10-11',
+			'2024-10-12',
+			'2025-10-01',
+			'2025-10-02',
+			'2026-09-20',
+			'2026-09-21',
+			'2027-10-10',
+			'2027-10-11',
+			'2028-09-29',
+			'2028-09-30',
+			'2029-09-18',
+			'2029-09-19',
+			'2030-10-07',
+			'2030-10-08',
+			'2031-09-26',
+			'2031-09-27'
+		]
+	},
+	{
+		greeting: 'Happy Canadian Thanksgiving',
+		emoji: '🇨',
+		dates: [
+			// Second Monday in October
+			'2024-10-14',
+			'2025-10-13',
+			'2026-10-12',
+			'2027-10-11',
+			'2028-10-09'
+		]
+	},
+	// Asian Lunar Calendar Holidays
+	{
+		greeting: 'Happy Lunar New Year',
+		emoji: '🧧',
+		dates: [
+			// Including Eve and first 3 days
+			'2024-02-09',
+			'2024-02-10',
+			'2024-02-11',
+			'2024-02-12',
+			'2025-01-28',
+			'2025-01-29',
+			'2025-01-30',
+			'2025-01-31',
+			'2026-02-16',
+			'2026-02-17',
+			'2026-02-18',
+			'2026-02-19',
+			'2027-02-05',
+			'2027-02-06',
+			'2027-02-07',
+			'2027-02-08',
+			'2028-01-25',
+			'2028-01-26',
+			'2028-01-27',
+			'2028-01-28',
+			'2029-02-12',
+			'2029-02-13',
+			'2029-02-14',
+			'2029-02-15',
+			'2030-02-02',
+			'2030-02-03',
+			'2030-02-04',
+			'2030-02-05',
+			'2031-01-22',
+			'2031-01-23',
+			'2031-01-24',
+			'2031-01-25'
+		]
+	},
+	// Cultural Festivals
+	{
+		greeting: 'Happy Carnival',
 		emoji: '🎭',
-		isHoliday: (date: Date): boolean => {
-			// Simplified check - Carnival is 47 days before Easter
-			const easter = ChristianHolidays.calculateEaster(date.getFullYear())
-			const carnival = new Date(easter)
-			carnival.setDate(easter.getDate() - 47)
-			const carnivalEnd = new Date(carnival)
-			carnivalEnd.setDate(carnival.getDate() + 5)
-			return date >= carnival && date <= carnivalEnd
-		}
+		dates: [
+			// Brazilian Carnival dates (including weekend before Ash Wednesday)
+			'2024-02-09',
+			'2024-02-10',
+			'2024-02-11',
+			'2024-02-12',
+			'2025-02-28',
+			'2025-03-01',
+			'2025-03-02',
+			'2025-03-03',
+			'2026-02-13',
+			'2026-02-14',
+			'2026-02-15',
+			'2026-02-16',
+			'2027-02-05',
+			'2027-02-06',
+			'2027-02-07',
+			'2027-02-08',
+			'2028-02-25',
+			'2028-02-26',
+			'2028-02-27',
+			'2028-02-28'
+		]
 	},
-
-	// Caribbean Holidays
 	{
-		name: 'Junkanoo',
 		greeting: 'Happy Junkanoo',
 		emoji: '🎊',
-		isHoliday: (date: Date): boolean => {
-			// December 26 and January 1
-			return (
-				(date.getMonth() === 11 && date.getDate() === 26) ||
-				(date.getMonth() === 0 && date.getDate() === 1)
-			)
-		}
+		dates: [
+			{ month: 12, day: 26 }, // Boxing Day
+			{ month: 1, day: 1 } // New Year's Day
+		]
+	},
+	{
+		greeting: 'Happy Nowruz',
+		emoji: '🌱',
+		dates: [
+			// Persian New Year (around March 20)
+			'2024-03-19',
+			'2024-03-20',
+			'2024-03-21',
+			'2025-03-19',
+			'2025-03-20',
+			'2025-03-21',
+			'2026-03-19',
+			'2026-03-20',
+			'2026-03-21',
+			'2027-03-19',
+			'2027-03-20',
+			'2027-03-21',
+			'2028-03-19',
+			'2028-03-20',
+			'2028-03-21'
+		]
+	},
+	{
+		greeting: 'Happy Vesak',
+		emoji: '☸',
+		dates: [
+			// Including day before and after traditional date
+			'2024-05-22',
+			'2024-05-23',
+			'2024-05-24',
+			'2025-05-11',
+			'2025-05-12',
+			'2025-05-13',
+			'2026-04-30',
+			'2026-05-01',
+			'2026-05-02',
+			'2027-05-19',
+			'2027-05-20',
+			'2027-05-21',
+			'2028-05-08',
+			'2028-05-09',
+			'2028-05-10'
+		]
+	},
+	{
+		greeting: '¡Feliz Día de los Muertos!',
+		emoji: '💀',
+		dates: [
+			{ month: 11, day: 1 },
+			{ month: 11, day: 2 }
+		]
+	},
+	{
+		greeting: 'Prost Oktoberfest!',
+		emoji: '🍺',
+		dates: [
+			// Mid-September to first Sunday in October
+			{ month: 9, day: 21 },
+			{ month: 9, day: 22 },
+			{ month: 9, day: 23 },
+			{ month: 9, day: 24 }
+		]
 	}
-]
-
-holidays.forEach(h => console.log(h.name))
+] as const
