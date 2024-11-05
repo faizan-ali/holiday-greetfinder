@@ -6,7 +6,7 @@
 		"email": "faizanali619@gmail.com",
 		"website": "https://faizanali.com"
 	},
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "A utility that lets you determine if a given date is a holiday and also show a greeting. Works until 2028, no API access required.",
 	"keywords": [
 		"greetings",
@@ -28,7 +28,6 @@
 		"muslim",
 		"christian"
 	],
-	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"files": ["dist"],
@@ -36,7 +35,7 @@
 		"build": "tsc",
 		"prepublishOnly": "npm run build",
 		"lint:fix": "npx @biomejs/biome format --write ",
-		"test": "node --import tsx --test test/functions.test.ts"
+		"test": "node --import tsx --test test/**.test.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.3",
@@ -46,7 +45,7 @@
 		"typescript": "^5.5.3"
 	},
 	"repository": {
-		"url": "https://github.com/faizan-ali/holiday-greetings",
+		"url": "https://github.com/faizan-ali/holiday-greetfinder",
 		"type": "git"
 	}
 }

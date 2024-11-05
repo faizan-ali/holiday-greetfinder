@@ -31,8 +31,8 @@ export const getHolidayGreeting = (
 		}
 	}
 
-	return holidays
-		.filter(holiday => {
+	return (holidays as unknown as Holiday[])
+		.filter((holiday: Holiday) => {
 			return holiday.dates.some(holidayDate => {
 				if (typeof holidayDate === 'string') {
 					// For specific dates (YYYY-MM-DD format)
@@ -48,14 +48,14 @@ export const getHolidayGreeting = (
 }
 
 const createHolidayChecker = (greeting: string) => {
-	return (dateStr: string, timezone?: string): boolean => {
+	return (dateStr: string): boolean => {
 		// Extract just the YYYY-MM-DD part if there's more
 		const simpleDateStr = dateStr.split('T')[0]
 
 		const holiday = holidays.find(h => h.greeting === greeting)
 		if (!holiday) return false
 
-		return holiday.dates.some(holidayDate =>
+		return holiday.dates.some((holidayDate: any) =>
 			isDateMatch(simpleDateStr, holidayDate)
 		)
 	}

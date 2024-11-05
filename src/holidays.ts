@@ -1,5 +1,3 @@
-import type { Holiday } from './'
-
 export const holidays = [
 	{
 		greeting: 'Merry Christmas',
